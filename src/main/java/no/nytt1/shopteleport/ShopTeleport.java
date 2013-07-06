@@ -42,13 +42,13 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 	public void onEnable(){
 		PluginDescriptionFile pdfFile = this.getDescription();
 		getServer().getPluginManager().registerEvents(this, this);
+		getConfig().options().copyDefaults(true);
+		saveConfig();
 		if(getConfig().getString("config.check-for-update").equalsIgnoreCase("true")) {
-			this.logger.info("[" + pdfFile.getName() + "] We are now checking for a new version!");
+			this.logger.info("We are now checking for a new version!");
 		this.updateChecker = new UpdateChecker(this, "http://dev.bukkit.org/bukkit-plugins/shopteleport/files.rss");
 		this.updateChecker.updateNeeded();
 		}
-		getConfig().options().copyDefaults(true);
-		saveConfig();
 		try {
 		    Metrics metrics = new Metrics(this);
 		    metrics.start();
@@ -81,17 +81,17 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		String LocationNotSafe = getConfig().getString("messages.location-not-safe");
-		String NoPermission = getConfig().getString("messages.no-permission");
-		String TpedToYourShop = getConfig().getString("messages.tped-to-your-shop");
-		String Delay = getConfig().getString("messages.delay");
-		String Cooldown = getConfig().getString("messages.cooldown");
-		String NoShop = getConfig().getString("messages.no-shop");
-		String NoTp = getConfig().getString("messages.no-tp");
-		String Tped = getConfig().getString("messages.tped");
-		String DoesntExsist = getConfig().getString("messages.doesnt-exsist");
-		String ShopDeleted = getConfig().getString("messages.shop-deleted");
-		String NoShopDeleted = getConfig().getString("messages.no-shop-deleted");
+		String LocationNotSafe = Messages.colours(getConfig().getString("messages.location-not-safe"));
+		String NoPermission = Messages.colours(getConfig().getString("messages.no-permission"));
+		String TpedToYourShop = Messages.colours(getConfig().getString("messages.tped-to-your-shop"));
+		String Delay = Messages.colours(getConfig().getString("messages.delay"));
+		String Cooldown = Messages.colours(getConfig().getString("messages.cooldown"));
+		String NoShop = Messages.colours(getConfig().getString("messages.no-shop"));
+		String NoTp = Messages.colours(getConfig().getString("messages.no-tp"));
+		String Tped = Messages.colours(getConfig().getString("messages.tped"));
+		String DoesntExsist = Messages.colours(getConfig().getString("messages.doesnt-exsist"));
+		String ShopDeleted = Messages.colours(getConfig().getString("messages.shop-deleted"));
+		String NoShopDeleted = Messages.colours(getConfig().getString("messages.no-shop-deleted"));
 		
 		
 		Player player = (Player) sender;
