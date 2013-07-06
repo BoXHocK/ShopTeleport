@@ -187,7 +187,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					}
 					}
 				}else{
-					String msg = ReplaceStrings(getConfig().getString("messages.no-shop"));
+					String msg = getConfig().getString("messages.no-shop").replaceAll("&[a-fk-or0-9]", "\u00A7$2");
 					player.sendMessage(msg);
 					return true;
 				}
