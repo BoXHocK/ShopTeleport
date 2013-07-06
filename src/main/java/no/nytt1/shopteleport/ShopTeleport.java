@@ -1,6 +1,5 @@
 package no.nytt1.shopteleport;
 
-import org.mcstats.Metrics;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
 public class ShopTeleport extends JavaPlugin implements Listener {
 	public final Logger logger = Logger.getLogger("Minecraft");
@@ -56,6 +56,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 			}
 			}
 		this.logger.info(pdfFile.getName() + " Version " + pdfFile.getVersion() + " Has Been Enabled!");
+		
 	}
 
 	@Override
@@ -77,6 +78,17 @@ public class ShopTeleport extends JavaPlugin implements Listener {
         }
     }
 
+	public String ReplaceStrings(String msg, String playername) {
+		
+		String Delaytime = Integer.toString(getConfig().getInt("config.delay.time"));
+		String Cooldowntime = Integer.toString(getConfig().getInt("config.cooldown-time"));
+		
+		msg = msg.replaceAll("[$delay-time]", Delaytime);
+		msg = msg.replaceAll("[$cooldown-time]", Cooldowntime);
+		msg = msg.replaceAll("[$shopowner]", playername);
+		msg = msg.replaceAll("(&([a-fk-or0-9]))", "\u00A7$2");
+		return msg;
+	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("setshop")){
@@ -175,7 +187,8 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					}
 					}
 				}else{
-					player.sendMessage(ChatColor.RED + "You don't have any shop yet!");
+					String msg = ReplaceStrings(getConfig().getString("messages.no-shop"), "BoXHocK");
+					player.sendMessage(msg);
 					return true;
 				}
 			}else{
