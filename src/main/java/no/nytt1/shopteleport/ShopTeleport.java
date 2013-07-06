@@ -194,7 +194,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 			}else{
 				if (args[0].equalsIgnoreCase("help") || args[0].equals("?")){
 
-						if(player.hasPermission("shopteleport.admin")) {
+						if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 						   player.sendMessage(ChatColor.WHITE + "----" + ChatColor.GREEN + " ShopTeleport Help " + ChatColor.RED + "(Admin) " + ChatColor.WHITE + "----");
 						}else{
 							player.sendMessage(ChatColor.WHITE + "----" + ChatColor.GREEN + " ShopTeleport Help " + ChatColor.WHITE + "----");
@@ -203,13 +203,13 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 						   player.sendMessage(ChatColor.AQUA + "/setshop" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Set your shop's warp position.");
 						   player.sendMessage(ChatColor.AQUA + "/shop <name>" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Teleports you to your/someone's shop.");
 						   player.sendMessage(ChatColor.AQUA + "/delshop" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Deletes your shop.");
-						   if(player.hasPermission("shopteleport.admin")) {
+						   if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 							   player.sendMessage(ChatColor.BLUE + "/shop reload" + ChatColor.WHITE + " - " + ChatColor.DARK_GREEN + "Reloads Config Files!");
 							   player.sendMessage(ChatColor.BLUE + "/shop set" + ChatColor.WHITE + " - " + ChatColor.DARK_GREEN + "More Information on Set command!");
 							}
 							   return true;
 						}else if (args[0].equalsIgnoreCase("reload")){
-					if(player.hasPermission("shopteleport.admin")) {
+					if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 						reloadConfig();
 						PluginDescriptionFile pdfFile = this.getDescription();
 						player.sendMessage(ChatColor.GREEN + "Reloading " + pdfFile.getName() + "!");
@@ -219,7 +219,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 							return true;
 						}
 				}else if (args[0].equalsIgnoreCase("set")){
-					if(player.hasPermission("shopteleport.admin")) {
+					if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 						if (args.length == 1 || args.length == 2 || args.length > 3){
 							player.sendMessage(ChatColor.WHITE + "----" + ChatColor.GREEN + " ShopTeleport Help " + ChatColor.RED + "SET " + ChatColor.WHITE + "----");
 							player.sendMessage(ChatColor.AQUA + "/shop set cooldown " + ChatColor.BLUE + "true" + ChatColor.WHITE + "|" + ChatColor.BLUE + "false" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Enables/Disables cooldown");
