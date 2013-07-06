@@ -1,0 +1,21 @@
+config:
+  check-for-update: true
+  saving: playername
+  cooldown: true
+  cooldown-time: 13
+  delay:
+    self: true
+    others: true
+    time: 2
+messages:
+  location-not-safe: That location isn't safe! Please place it somewhere else.
+  no-permission: You are not allowed to use that command!
+  tped-to-your-shop: Teleported to your shop!
+  delay: Please wait! You will be teleported in [$delay-time] seconds.
+  cooldown: You need to wait [$cooldown-time] seconds untill you can do that command again!
+  no-shop: You don't have any shop yet!
+  no-tp: Teleporting would damage you, so we stopped you!
+  tped: Teleported to [$shopowner]'s shop!
+  doesnt-exsist: That player doesn't have a shop!
+  shop-deleted: Your shop has been deleted!
+  no-shop-deleted: You don't have any shop to be deleted!
