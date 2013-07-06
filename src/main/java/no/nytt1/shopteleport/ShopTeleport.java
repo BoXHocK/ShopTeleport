@@ -29,8 +29,6 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 	private List<Player> cantDoCommand = new ArrayList<Player>();
 
 	Countdown d = new Countdown();
-	
-	ahbsadkjhgb
 
 	protected UpdateChecker updateChecker;
 
