@@ -32,17 +32,23 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 
 	protected UpdateChecker updateChecker;
 
+	@Override
+	public void onDisable(){
+		PluginDescriptionFile pdfFile = this.getDescription();
+		this.logger.info(pdfFile.getName() + " Has Been Disabled!");
+	}
 
 	@Override
 	public void onEnable(){
+		PluginDescriptionFile pdfFile = this.getDescription();
 		getServer().getPluginManager().registerEvents(this, this);
 		if(getConfig().getString("config.check-for-update").equalsIgnoreCase("true")) {
+			this.logger.info("[" + pdfFile.getName() + "] We are now checking for a new version!");
 		this.updateChecker = new UpdateChecker(this, "http://dev.bukkit.org/bukkit-plugins/shopteleport/files.rss");
 		this.updateChecker.updateNeeded();
 		}
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-		PluginDescriptionFile pdfFile = this.getDescription();
 		try {
 		    Metrics metrics = new Metrics(this);
 		    metrics.start();
@@ -59,11 +65,6 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 		
 	}
 
-	@Override
-	public void onDisable(){
-		PluginDescriptionFile pdfFile = this.getDescription();
-		this.logger.info(pdfFile.getName() + " Has Been Disabled!");
-	}
 
 	@EventHandler
     public void onplayerjoin(PlayerJoinEvent event){
@@ -78,18 +79,21 @@ public class ShopTeleport extends JavaPlugin implements Listener {
         }
     }
 
-	public String ReplaceStrings(String msg) {
-		
-		//String Delaytime = Integer.toString(getConfig().getInt("config.delay.time"));
-		//String Cooldowntime = Integer.toString(getConfig().getInt("config.cooldown-time"));
-		
-		//msg = msg.replaceAll("[$delay-time]", Delaytime);
-		//msg = msg.replaceAll("[$cooldown-time]", Cooldowntime);
-		//msg = msg.replaceAll("[$shopowner]", playername);
-		msg = msg.replaceAll("&[a-fk-or0-9]", "\u00A7$2");
-		return msg;
-	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
+		String LocationNotSafe = getConfig().getString("messages.location-not-safe");
+		String NoPermission = getConfig().getString("messages.no-permission");
+		String TpedToYourShop = getConfig().getString("messages.tped-to-your-shop");
+		String Delay = getConfig().getString("messages.delay");
+		String Cooldown = getConfig().getString("messages.cooldown");
+		String NoShop = getConfig().getString("messages.no-shop");
+		String NoTp = getConfig().getString("messages.no-tp");
+		String Tped = getConfig().getString("messages.tped");
+		String DoesntExsist = getConfig().getString("messages.doesnt-exsist");
+		String ShopDeleted = getConfig().getString("messages.shop-deleted");
+		String NoShopDeleted = getConfig().getString("messages.no-shop-deleted");
+		
+		
 		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("setshop")){
 			if (player.hasPermission("shopteleport.setshop")){
@@ -115,11 +119,11 @@ public class ShopTeleport extends JavaPlugin implements Listener {
                     saveConfig();
 	sender.sendMessage(ChatColor.GREEN + "Shop set for " + player.getDisplayName());
                 }else if (isSafe(loc)==false){
-                	player.sendMessage(ChatColor.RED + "That location isn't safe! Please place it somewhere else.");
+                	player.sendMessage(LocationNotSafe);
                 }
                 
 			}else{
-				player.sendMessage(ChatColor.RED + "You are not allowed to use that command!");
+				player.sendMessage(NoPermission);
 			}
 			return true;
 		}else if (cmd.getName().equalsIgnoreCase("shop")){
@@ -136,7 +140,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 				        loc.setPitch(pitch);
 				        loc.setYaw(yaw);
 				        player.teleport(loc);
-							player.sendMessage(ChatColor.GREEN + "Teleported to your shop!");
+							player.sendMessage(TpedToYourShop);
 						return true;
 					}else{
 					if (getConfig().getBoolean("config.delay.self")==true) {
@@ -144,7 +148,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 							try {
 								int delaytime = getConfig().getInt("config.delay.time");
 								int delaytime1 = delaytime * 1000;
-								player.sendMessage(ChatColor.GOLD + "Please wait! You will be teleported in " + getConfig().getInt("config.delay.time") + " seconds.");
+								player.sendMessage(Delay);
 								Thread.sleep(delaytime1);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
@@ -158,14 +162,14 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					        loc.setPitch(pitch);
 					        loc.setYaw(yaw);
 					        player.teleport(loc);
-							player.sendMessage(ChatColor.GREEN + "Teleported to your shop!");
+							player.sendMessage(TpedToYourShop);
 							cantDoCommand.add(player);
 							d.setList(cantDoCommand);
 							d.setPlayer(player);
 							new Thread(d).start();
 							return true;
 						}else{
-							player.sendMessage(ChatColor.RED + "You need to wait " + getConfig().getInt("config.cooldown-time") + " seconds untill you can do that command again!");
+							player.sendMessage(Cooldown);
 							return true;
 						}
 					}else{
@@ -178,7 +182,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 				        loc.setPitch(pitch);
 				        loc.setYaw(yaw);
 				        player.teleport(loc);
-						player.sendMessage(ChatColor.GREEN + "Teleported to your shop!");
+						player.sendMessage(TpedToYourShop);
 						cantDoCommand.add(player);
 						d.setList(cantDoCommand);
 						d.setPlayer(player);
@@ -188,8 +192,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					}
 				}else{
 					
-					String msg = getConfig().getString("messages.no-shop").replace("&[a-z0-9]", "\u00A7$2");
-					player.sendMessage(""+msg+"");
+					player.sendMessage(NoShop);
 					return true;
 				}
 			}else{
@@ -216,7 +219,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 						player.sendMessage(ChatColor.GREEN + "Reloading " + pdfFile.getName() + "!");
 						return true;
 						}else{
-							player.sendMessage(ChatColor.RED + "You don't have permission for that command!");
+							player.sendMessage(NoPermission);
 							return true;
 						}
 				}else if (args[0].equalsIgnoreCase("set")){
@@ -302,7 +305,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 							}
 						}
 					}else{
-						player.sendMessage(ChatColor.DARK_RED + "You are not allowed to perform this command!");
+						player.sendMessage(NoPermission);
 						return true;
 					}
 						   return true;
@@ -313,7 +316,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					player.sendMessage(ChatColor.GREEN + "Reloading " + pdfFile.getName() + "!");
 					return true;
 					}else{
-						player.sendMessage(ChatColor.RED + "You don't have permission for that command!");
+						player.sendMessage(NoPermission);
 						return true;
 					}
 			}else{
@@ -331,7 +334,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 						        loc.setPitch(pitch);
 						        loc.setYaw(yaw);
 						        player.teleport(loc);
-								player.sendMessage(ChatColor.GREEN + "Teleported to your shop!");
+								player.sendMessage(TpedToYourShop);
 								return true;
 							}else{
 							if (getConfig().getBoolean("config.delay.self")==true) {
@@ -339,7 +342,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 									try {
 										int delaytime = getConfig().getInt("config.delay.time");
 										int delaytime1 = delaytime * 1000;
-										player.sendMessage(ChatColor.GOLD + "Please wait! You will be teleported in " + getConfig().getInt("config.delay.time") + " seconds.");
+										player.sendMessage(Delay);
 										Thread.sleep(delaytime1);
 									} catch (InterruptedException e) {
 										e.printStackTrace();
@@ -355,17 +358,17 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 
 						        if(isSafe(loc)==true){
 				        		player.teleport(loc);
-								player.sendMessage(ChatColor.GREEN + "Teleported to " + args[0] + "'s shop!");
+								player.sendMessage(Tped);
 								cantDoCommand.add(player);
 								d.setList(cantDoCommand);
 								d.setPlayer(player);
 								new Thread(d).start();
 								}else if (isSafe(loc)==false){
-		                        	player.sendMessage(ChatColor.RED + "Teleporting would damage you, so we stopped you!");
+		                        	player.sendMessage(NoTp);
 		                        }
 								return true;
 							}else{
-								player.sendMessage(ChatColor.RED + "You need to wait " + getConfig().getInt("config.cooldown-time") + " seconds untill you can do that command again!");
+								player.sendMessage(Cooldown);
 								return true;
 							}
 							}
@@ -376,7 +379,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 									try {
 										int delaytime = getConfig().getInt("config.delay.time");
 										int delaytime1 = delaytime * 1000;
-										player.sendMessage(ChatColor.GOLD + "Please wait! You will be teleported in " + getConfig().getInt("config.delay.time") + " seconds.");
+										player.sendMessage(Delay);
 										Thread.sleep(delaytime1);
 									} catch (InterruptedException e) {
 										e.printStackTrace();
@@ -392,17 +395,17 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 						        if(isSafe(loc)==true){
 						        	Location loce = new Location(getServer().getWorld(getConfig().getString("shops." + playername1 + ".world")), x, y, z); //defines new location
 					        		player.teleport(loce);
-								player.sendMessage(ChatColor.GREEN + "Teleported to " + args[0] + "'s shop!");
+								player.sendMessage(Tped);
 								cantDoCommand.add(player);
 								d.setList(cantDoCommand);
 								d.setPlayer(player);
 								new Thread(d).start();
 						        }else if (isSafe(loc)==false){
-		                        	player.sendMessage(ChatColor.RED + "Teleporting would damage you, so we stopped you!");
+		                        	player.sendMessage(NoTp);
 		                        }
 								return true;
 								}else{
-									player.sendMessage(ChatColor.RED + "You need to wait " + getConfig().getInt("config.cooldown-time") + " seconds untill you can do that command again!");
+									player.sendMessage(Cooldown);
 									return true;
 								}
 							}else{
@@ -417,19 +420,19 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 						        if(isSafe(loc)==true){
 						        	Location loce = new Location(getServer().getWorld(getConfig().getString("shops." + playername1 + ".world")), x, y, z); //defines new location
 					        		player.teleport(loce);
-								player.sendMessage(ChatColor.GREEN + "Teleported to " + args[0] + "'s shop!");
+								player.sendMessage(Tped);
 								cantDoCommand.add(player);
 								d.setList(cantDoCommand);
 								d.setPlayer(player);
 								new Thread(d).start();
 							}else if (isSafe(loc)==false){
-	                        	player.sendMessage(ChatColor.RED + "Teleporting would damage you, so we stopped you!");
+	                        	player.sendMessage(NoTp);
 	                        }
 								return true;
 							}
 							}
 						}else{
-						player.sendMessage(ChatColor.RED + "That player doesn't have a shop!");
+						player.sendMessage(DoesntExsist);
 						}
 					}
 				}
@@ -441,12 +444,12 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 				getConfig().set("shops." + playername, null);
 				saveConfig();
 
-				player.sendMessage(ChatColor.YELLOW + "Your shop has been deleted!");
+				player.sendMessage(ShopDeleted);
 				}else{
-					player.sendMessage(ChatColor.RED + "You are not allowed to use that command!");
+					player.sendMessage(NoPermission);
 				}
 			}else{
-				player.sendMessage(ChatColor.RED + "You don't have any shop to be deleted!");
+				player.sendMessage(NoShopDeleted);
 			}
 			return true;
 		}
