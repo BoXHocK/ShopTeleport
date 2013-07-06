@@ -86,7 +86,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 		//msg = msg.replaceAll("[$delay-time]", Delaytime);
 		//msg = msg.replaceAll("[$cooldown-time]", Cooldowntime);
 		//msg = msg.replaceAll("[$shopowner]", playername);
-		msg = msg.replaceAll("(&([a-fk-or0-9]))", "\u00A7$2");
+		msg = msg.replaceAll("&[a-fk-or0-9]", "\u00A7$2");
 		return msg;
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
