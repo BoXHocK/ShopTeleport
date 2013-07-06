@@ -78,14 +78,14 @@ public class ShopTeleport extends JavaPlugin implements Listener {
         }
     }
 
-	public String ReplaceStrings(String msg, String playername) {
+	public String ReplaceStrings(String msg) {
 		
-		String Delaytime = Integer.toString(getConfig().getInt("config.delay.time"));
-		String Cooldowntime = Integer.toString(getConfig().getInt("config.cooldown-time"));
+		//String Delaytime = Integer.toString(getConfig().getInt("config.delay.time"));
+		//String Cooldowntime = Integer.toString(getConfig().getInt("config.cooldown-time"));
 		
-		msg = msg.replaceAll("[$delay-time]", Delaytime);
-		msg = msg.replaceAll("[$cooldown-time]", Cooldowntime);
-		msg = msg.replaceAll("[$shopowner]", playername);
+		//msg = msg.replaceAll("[$delay-time]", Delaytime);
+		//msg = msg.replaceAll("[$cooldown-time]", Cooldowntime);
+		//msg = msg.replaceAll("[$shopowner]", playername);
 		msg = msg.replaceAll("(&([a-fk-or0-9]))", "\u00A7$2");
 		return msg;
 	}
@@ -187,7 +187,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					}
 					}
 				}else{
-					String msg = ReplaceStrings(getConfig().getString("messages.no-shop"), "BoXHocK");
+					String msg = ReplaceStrings(getConfig().getString("messages.no-shop"));
 					player.sendMessage(msg);
 					return true;
 				}
