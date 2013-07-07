@@ -75,3 +75,7 @@ nb-configuration.xml
 /resources
 /update
 /worlds
+
+# Compile Commands #
+#######################
+*.command
