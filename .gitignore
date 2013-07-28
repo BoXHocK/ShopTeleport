@@ -65,17 +65,6 @@ nb-configuration.xml
 ##############
 *.bak
 
-# Spout runtime folders #
-#########################
-/cache
-/config
-/data
-/logs
-/plugins
-/resources
-/update
-/worlds
-
 # Compile Commands #
 #######################
 *.command
