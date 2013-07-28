@@ -81,7 +81,6 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		String LocationNotSafe = Messages.colours(getConfig().getString("messages.location-not-safe"));
 		String NoPermission = Messages.colours(getConfig().getString("messages.no-permission"));
 		String TpedToYourShop = Messages.colours(getConfig().getString("messages.tped-to-your-shop"));
 		String Delay = Messages.colours(getConfig().getString("messages.delay"));
@@ -96,36 +95,8 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 		
 		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("setshop")){
-			if (player.hasPermission("shopteleport.setshop")){
-				String playername1 = player.getName().toLowerCase();
-                Location loc = player.getLocation();
-                double x = loc.getX();
-                double y = loc.getY();
-                double z = loc.getZ();
-                double yaw = loc.getYaw();
-                double pitch = loc.getPitch();
-                World world = loc.getWorld();
-                
-                
-            
-				if (isSafe(loc)==true){
-                	getConfig().set("shops." + playername1 + ".x", Double.valueOf(x));
-                    getConfig().set("shops." + playername1 + ".y", Double.valueOf(y));
-                    getConfig().set("shops." + playername1 + ".z", Double.valueOf(z));
-                    getConfig().set("shops." + playername1 + ".yaw", Double.valueOf(yaw));
-                    getConfig().set("shops." + playername1 + ".pitch", Double.valueOf(pitch));
-                    getConfig().set("shops." + playername1 + ".world", world.getName());
-                    
-                    saveConfig();
-	sender.sendMessage(ChatColor.GREEN + "Shop set for " + player.getDisplayName());
-                }else if (isSafe(loc)==false){
-                	player.sendMessage(LocationNotSafe);
-                }
-                
-			}else{
-				player.sendMessage(NoPermission);
-			}
-			return true;
+			Setshop SetShop = new Setshop();
+			SetShop.setShop(player, args);
 		}else if (cmd.getName().equalsIgnoreCase("shop")){
 			if (args.length == 0) {
 				String playername1 = player.getName().toLowerCase();
@@ -313,7 +284,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 				if(player.hasPermission("shopteleport.admin")) {
 					reloadConfig();
 					PluginDescriptionFile pdfFile = this.getDescription();
-					player.sendMessage(ChatColor.GREEN + "Reloading " + pdfFile.getName() + "!");
+					player.sendMessage(ChatColor.GREEN + "Reloaded " + pdfFile.getName() + "!");
 					return true;
 					}else{
 						player.sendMessage(NoPermission);
