@@ -92,11 +92,12 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 		String ShopDeleted = Messages.colours(getConfig().getString("messages.shop-deleted"));
 		String NoShopDeleted = Messages.colours(getConfig().getString("messages.no-shop-deleted"));
 		
-		
+		Setshop setshop = new Setshop();
 		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("setshop")){
-			Setshop SetShop = new Setshop();
-			SetShop.setShop(player, args);
+			this.logger.info("Command sendt to main class");
+			setshop.setshop(player, args);
+			this.logger.info("Command excecution done");
 		}else if (cmd.getName().equalsIgnoreCase("shop")){
 			if (args.length == 0) {
 				String playername1 = player.getName().toLowerCase();
@@ -187,7 +188,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 						reloadConfig();
 						PluginDescriptionFile pdfFile = this.getDescription();
-						player.sendMessage(ChatColor.GREEN + "Reloading " + pdfFile.getName() + "!");
+						player.sendMessage(ChatColor.GREEN + "Reloaded " + pdfFile.getName() + "!");
 						return true;
 						}else{
 							player.sendMessage(NoPermission);
