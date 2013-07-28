@@ -1,10 +1,18 @@
 package no.nytt1.shopteleport;
 
-import org.bukkit.entity.Player;
+/*import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;*/
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+/*import org.bukkit.entity.Player;*/
 
-public class Setshop {
+public class Setshop implements CommandExecutor {
 	
-	/*public static boolean isSafe(Location loc){
+/*	public boolean isSafe(Location loc){
 	    World world = loc.getWorld();
 	    double y = loc.getY();
 	    //Check for suffocation
@@ -47,10 +55,10 @@ public class Setshop {
 	    }
 		return false;
 	}
-*/
-	public boolean setshop(Player player, String[] args) {
-		ShopTeleport.plugin.logger.info("In Setshop class");
-		/*if (player.hasPermission("shopteleport.setshop")){
+	*/
+@Override
+public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+			/*if (player.hasPermission("shopteleport.setshop")){
 			String playername1 = player.getName().toLowerCase();
             Location loc = player.getLocation();
             double x = loc.getX();
@@ -69,7 +77,7 @@ public class Setshop {
                 ShopTeleport.plugin.getConfig().set("shops." + playername1 + ".world", world.getName());
                 
                 ShopTeleport.plugin.saveConfig();
-player.sendMessage(ChatColor.GREEN + "Shop has been set");
+player.sendMessage(ChatColor.GREEN + "Your shop has been set");
             }else if (isSafe(loc)==false){
             	player.sendMessage(Messages.colours(ShopTeleport.plugin.getConfig().getString("messages.location-not-safe")));
             }
@@ -77,8 +85,8 @@ player.sendMessage(ChatColor.GREEN + "Shop has been set");
 		}else{
 			player.sendMessage(Messages.colours(ShopTeleport.plugin.getConfig().getString("messages.no-permission")));
 		}*/
+			ShopTeleport.plugin.logger.info("Done!");
 		return true;
-	}
 	
-	
+}
 }

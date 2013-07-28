@@ -61,6 +61,11 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 				this.logger.info("Download it Here: " + this.updateChecker.getLink());
 			}
 			}
+		
+		 //Register Commands
+		//this.getCommand("setshop").setExecutor(new Setshop());
+		getCommand("setshop").setExecutor(new Setshop());
+		
 		this.logger.info(pdfFile.getName() + " Version " + pdfFile.getVersion() + " Has Been Enabled!");
 		
 	}
@@ -92,13 +97,8 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 		String ShopDeleted = Messages.colours(getConfig().getString("messages.shop-deleted"));
 		String NoShopDeleted = Messages.colours(getConfig().getString("messages.no-shop-deleted"));
 		
-		Setshop setshop = new Setshop();
 		Player player = (Player) sender;
-		if (cmd.getName().equalsIgnoreCase("setshop")){
-			this.logger.info("Command sendt to main class");
-			setshop.setshop(player, args);
-			this.logger.info("Command excecution done");
-		}else if (cmd.getName().equalsIgnoreCase("shop")){
+		if (cmd.getName().equalsIgnoreCase("shop")){
 			if (args.length == 0) {
 				String playername1 = player.getName().toLowerCase();
 				if (StringUtils.isNotBlank(getConfig().getString("shops." + playername1))) {
