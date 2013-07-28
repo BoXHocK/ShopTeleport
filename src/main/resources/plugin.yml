@@ -1,6 +1,6 @@
 name: ShopTeleport
 main: no.nytt1.shopteleport.ShopTeleport
-version: 0.8.0
+version: 0.9.0-SNAPSHOT
 authors: [BoXHocK]
 description: Teleports you to your or someone's shop!
 
