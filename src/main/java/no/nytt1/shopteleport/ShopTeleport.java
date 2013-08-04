@@ -1,6 +1,5 @@
 package no.nytt1.shopteleport;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -20,7 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 public class ShopTeleport extends JavaPlugin implements Listener {
 	public final Logger logger = Logger.getLogger("Minecraft");
@@ -31,6 +29,8 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 	Countdown d = new Countdown();
 
 	protected UpdateChecker updateChecker;
+	
+	
 
 	@Override
 	public void onDisable(){
@@ -49,22 +49,18 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 		this.updateChecker = new UpdateChecker(this, "http://dev.bukkit.org/bukkit-plugins/shopteleport/files.rss");
 		this.updateChecker.updateNeeded();
 		}
-		try {
-		    Metrics metrics = new Metrics(this);
-		    metrics.start();
-		} catch (IOException e) {
-		    // Failed to submit the stats :-(
-		}
 		if(getConfig().getString("config.check-for-update").equalsIgnoreCase("true")) {
 			if (this.updateChecker.updateNeeded()){
 				this.logger.info("Newest version available: " + this.updateChecker.getVersion());
 				this.logger.info("Download it Here: " + this.updateChecker.getLink());
+			} else {
+				this.logger.info("Nope, no new version here!");
 			}
 			}
 		
 		 //Register Commands
 		//this.getCommand("setshop").setExecutor(new Setshop());
-		getCommand("setshop").setExecutor(new Setshop());
+		this.getCommand("setshop").setExecutor(new no.nytt1.shopteleport.commands.Setshop(this));
 		
 		this.logger.info(pdfFile.getName() + " Version " + pdfFile.getVersion() + " Has Been Enabled!");
 		
