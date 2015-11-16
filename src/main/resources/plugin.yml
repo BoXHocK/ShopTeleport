@@ -8,18 +8,12 @@ commands:
    setshop:
       description: Set your shop's warp position.
       usage: /<command>
-      permission: shopteleport.setshop
-      permission-message: You dont have permissions for that command!
    delshop:
       description: Deletes your shop.
       usage: /<command>
-      permission: shopteleport.delshop
-      permission-message: You dont have permissions for that command!
    shop:
       description: Teleports you to your/someone's shop.
       usage: /<command> <player>
-      permission: shopteleport.shop
-      permission-message: You dont have permissions for that command!
       
 permissions:
     shopteleport.*:
