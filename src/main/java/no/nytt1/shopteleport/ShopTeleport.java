@@ -119,7 +119,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 			Player player = (Player) sender;
 			if (cmd.getName().equalsIgnoreCase("shop") && player.hasPermission("shopteleport.shop")){
 				if (args.length == 0) {
-					String playername1 = player.getName().toLowerCase();
+					String playername1 = player.getName();
 					if (StringUtils.isNotBlank(getConfig().getString("shops." + playername1))) {
 						if(player.hasPermission("shopteleport.admin") || player.hasPermission("shopteleport.nolimit")) {
 							float x = getConfig().getInt("shops." + playername1 + ".x");
@@ -304,8 +304,8 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 							return true;
 						}
 				}else{
-						String playername = args[0].toLowerCase();
-						String playername1 = player.getName().toLowerCase();
+						String playername = args[0];
+						String playername1 = player.getName();
 						if (StringUtils.isNotBlank(getConfig().getString("shops." + playername))) {
 							if(playername.equals(playername1)) {
 								if(player.hasPermission("shopteleport.admin") || player.hasPermission("shopteleport.nolimit")) {
@@ -402,7 +402,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					}
 				return true;
 			} else if (cmd.getName().equalsIgnoreCase("delshop")){
-				String playername = player.getName().toLowerCase();
+				String playername = player.getName();
 				if (args.length == 0 && player.hasPermission("shopteleport.delshop")){
 					if (StringUtils.isNotBlank(getConfig().getString("shops." + playername))) {
 						getConfig().set("shops." + playername, null);
@@ -411,6 +411,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					}else{
 						player.sendMessage(NoShopDeleted);
 					}
+					return true;
 				}
 				
 				if (args.length == 1 && player.hasPermission("shopteleport.delshop-others")){
@@ -422,8 +423,8 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 					}else{
 						player.sendMessage(NoShopDeleted);
 					}
-				}				
-				return true;
+					return true;
+				}
 			}
 		}		
 		sender.sendMessage(Messages.colours(plugin.getConfig().getString("messages.no-permission")));

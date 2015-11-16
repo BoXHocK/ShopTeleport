@@ -36,7 +36,7 @@ public class Setshop implements CommandExecutor {
 		if (sender instanceof Player){
 			Player player = (Player) sender;
 			if (player.hasPermission("shopteleport.setshop")){
-				String playername1 = player.getName().toLowerCase();
+				String playername1 = player.getName();
 		        Location loc = player.getLocation();
 		        double x = loc.getX();
 		        double y = loc.getY();
