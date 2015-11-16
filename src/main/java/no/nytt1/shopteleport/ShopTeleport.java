@@ -193,6 +193,7 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 							   if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 								   player.sendMessage(ChatColor.BLUE + "/shop reload" + ChatColor.WHITE + " - " + ChatColor.DARK_GREEN + "Reloads Config Files!");
 								   player.sendMessage(ChatColor.BLUE + "/shop set" + ChatColor.WHITE + " - " + ChatColor.DARK_GREEN + "More Information on Set command!");
+								   player.sendMessage(ChatColor.BLUE + "/delshop <name>" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Deletes others shop.");
 								}
 								   return true;
 							}else if (args[0].equalsIgnoreCase("reload")){
@@ -400,20 +401,28 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 						}
 					}
 				return true;
-			} else if (cmd.getName().equalsIgnoreCase("delshop") && player.hasPermission("shopteleport.delshop")){
+			} else if (cmd.getName().equalsIgnoreCase("delshop")){
 				String playername = player.getName().toLowerCase();
-				if (StringUtils.isNotBlank(getConfig().getString("shops." + playername))) {
-					if (player.hasPermission("shopteleport.setshop")){
-					getConfig().set("shops." + playername, null);
-					saveConfig();
-
-					player.sendMessage(ShopDeleted);
+				if (args.length == 0 && player.hasPermission("shopteleport.delshop")){
+					if (StringUtils.isNotBlank(getConfig().getString("shops." + playername))) {
+						getConfig().set("shops." + playername, null);
+						saveConfig();
+						player.sendMessage(ShopDeleted);
 					}else{
-						player.sendMessage(NoPermission);
+						player.sendMessage(NoShopDeleted);
 					}
-				}else{
-					player.sendMessage(NoShopDeleted);
 				}
+				
+				if (args.length == 1 && player.hasPermission("shopteleport.delshop-others")){
+					playername = args[0];
+					if (StringUtils.isNotBlank(getConfig().getString("shops." + playername))) {
+						getConfig().set("shops." + playername, null);
+						saveConfig();
+						player.sendMessage(ShopDeleted);
+					}else{
+						player.sendMessage(NoShopDeleted);
+					}
+				}				
 				return true;
 			}
 		}		

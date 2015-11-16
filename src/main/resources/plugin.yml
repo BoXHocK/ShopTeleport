@@ -18,18 +18,12 @@ commands:
 permissions:
     shopteleport.*:
         description: Basic ShopTeleport commands.
+        default: op
         children:
             shopteleport.setshop: true
             shopteleport.shop: true
             shopteleport.delshop: true
-            shopteleport.admin: false
-            shopteleport.nolimit: false
-    shopteleport.staff.*:
-        description: Full ShopTeleport access.
-        children:
-            shopteleport.setshop: true
-            shopteleport.shop: true
-            shopteleport.delshop: true
+            shopteleport.delshop-others: true
             shopteleport.admin: true
             shopteleport.nolimit: true
     shopteleport.setshop:
@@ -40,6 +34,9 @@ permissions:
         default: true
     shopteleport.delshop:
         description: Deletes your shop.
+        default: false
+    shopteleport.delshop-others:
+        description: Deletes others shop.
         default: false
     shopteleport.admin:
         description: Admin Commands.
