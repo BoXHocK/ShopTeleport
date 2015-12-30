@@ -35,7 +35,7 @@ public class Setshop implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (sender instanceof Player){
 			Player player = (Player) sender;
-			if (player.hasPermission("shopteleport.setshop")){
+			if (args.length == 0 && player.hasPermission("shopteleport.setshop")){
 				String playername1 = player.getName();
 		        Location loc = player.getLocation();
 		        double x = loc.getX();
@@ -52,6 +52,7 @@ public class Setshop implements CommandExecutor {
 					plugin.getConfig().set("shops." + playername1 + ".yaw", Double.valueOf(yaw));
 		            plugin.getConfig().set("shops." + playername1 + ".pitch", Double.valueOf(pitch));
 		            plugin.getConfig().set("shops." + playername1 + ".world", world.getName());
+		            plugin.getConfig().set("shops." + playername1 + ".message", "");
 		            
 		            plugin.saveConfig();
 		            player.sendMessage(Messages.colours(plugin.getConfig().getString("messages.shop-set")));
