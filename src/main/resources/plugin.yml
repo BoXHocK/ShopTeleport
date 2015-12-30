@@ -8,34 +8,22 @@ commands:
    setshop:
       description: Set your shop's warp position.
       usage: /<command>
-      permission: shopteleport.setshop
-      permission-message: You dont have permissions for that command!
    delshop:
       description: Deletes your shop.
       usage: /<command>
-      permission: shopteleport.delshop
-      permission-message: You dont have permissions for that command!
    shop:
       description: Teleports you to your/someone's shop.
       usage: /<command> <player>
-      permission: shopteleport.shop
-      permission-message: You dont have permissions for that command!
       
 permissions:
     shopteleport.*:
         description: Basic ShopTeleport commands.
+        default: op
         children:
             shopteleport.setshop: true
             shopteleport.shop: true
             shopteleport.delshop: true
-            shopteleport.admin: false
-            shopteleport.nolimit: false
-    shopteleport.staff.*:
-        description: Full ShopTeleport access.
-        children:
-            shopteleport.setshop: true
-            shopteleport.shop: true
-            shopteleport.delshop: true
+            shopteleport.delshop-others: true
             shopteleport.admin: true
             shopteleport.nolimit: true
     shopteleport.setshop:
@@ -46,6 +34,9 @@ permissions:
         default: true
     shopteleport.delshop:
         description: Deletes your shop.
+        default: false
+    shopteleport.delshop-others:
+        description: Deletes others shop.
         default: false
     shopteleport.admin:
         description: Admin Commands.
