@@ -7,6 +7,7 @@ config:
     self: true
     others: true
     time: 3
+  msg-length: 128
 messages:
   location-not-safe: "&4That location isn't safe! Please place it somewhere else."
   no-permission: "&4You are not allowed to use that command!"
@@ -21,3 +22,5 @@ messages:
   no-shop-deleted: "&4You don't have any shop to be deleted!"
   shop-set: "&aYou set your shop here!"
   teleport-cancelled: "&6Teleport cancelled because you moved!"
+  message-set: "&aShop message set to:"
+  shop-list: "&2Shop List:"

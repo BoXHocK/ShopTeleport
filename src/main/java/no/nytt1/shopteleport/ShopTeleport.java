@@ -97,10 +97,12 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e){
-		if (tpWait.contains(e.getPlayer().getName())){
-			tpWait.remove(e.getPlayer().getName());
-			e.getPlayer().sendMessage(Messages.colours(plugin.getConfig().getString("messages.teleport-cancelled")));
-		}
+		if (e.getTo().distance(e.getFrom()) > 0){
+			if (tpWait.contains(e.getPlayer().getName())){
+				tpWait.remove(e.getPlayer().getName());
+				e.getPlayer().sendMessage(Messages.colours(plugin.getConfig().getString("messages.teleport-cancelled")));
+			}
+		}		
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -115,13 +117,16 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 		String ShopDeleted = Messages.colours(getConfig().getString("messages.shop-deleted"));
 		String NoShopDeleted = Messages.colours(getConfig().getString("messages.no-shop-deleted"));
 		
+		String MessageSet = Messages.colours(getConfig().getString("messages.message-set"));
+		String ShopList = Messages.colours(getConfig().getString("messages.shop-list"));
+		
 		if (sender instanceof Player){
 			Player player = (Player) sender;
 			if (cmd.getName().equalsIgnoreCase("shop") && player.hasPermission("shopteleport.shop")){
 				if (args.length == 0) {
 					String playername1 = player.getName();
 					if (StringUtils.isNotBlank(getConfig().getString("shops." + playername1))) {
-						if(player.hasPermission("shopteleport.admin") || player.hasPermission("shopteleport.nolimit")) {
+						if(player.hasPermission("shopteleport.admin") || player.hasPermission("shopteleport.nolimit") || player.isOp()) {
 							float x = getConfig().getInt("shops." + playername1 + ".x");
 							float y = getConfig().getInt("shops." + playername1 + ".y");
 							float z = getConfig().getInt("shops." + playername1 + ".z");
@@ -190,13 +195,15 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 							   player.sendMessage(ChatColor.AQUA + "/setshop" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Set your shop's warp position.");
 							   player.sendMessage(ChatColor.AQUA + "/shop <name>" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Teleports you to your/someone's shop.");
 							   player.sendMessage(ChatColor.AQUA + "/delshop" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Deletes your shop.");
+							   player.sendMessage(ChatColor.AQUA + "/shop message|msg" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Set a shop message.");
+							   player.sendMessage(ChatColor.AQUA + "/shop list" + ChatColor.WHITE + " - " + ChatColor.GREEN + "List all shops.");
 							   if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 								   player.sendMessage(ChatColor.BLUE + "/shop reload" + ChatColor.WHITE + " - " + ChatColor.DARK_GREEN + "Reloads Config Files!");
 								   player.sendMessage(ChatColor.BLUE + "/shop set" + ChatColor.WHITE + " - " + ChatColor.DARK_GREEN + "More Information on Set command!");
 								   player.sendMessage(ChatColor.BLUE + "/delshop <name>" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Deletes others shop.");
 								}
 								   return true;
-							}else if (args[0].equalsIgnoreCase("reload")){
+					}else if (args[0].equalsIgnoreCase("reload")){
 						if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 							reloadConfig();
 							PluginDescriptionFile pdfFile = this.getDescription();
@@ -293,8 +300,8 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 							return true;
 						}
 							   return true;
-						}else if (args[0].equals("reload")){
-					if(player.hasPermission("shopteleport.admin")) {
+				}else if (args[0].equals("reload")){
+					if(player.hasPermission("shopteleport.admin") || player.isOp()) {
 						reloadConfig();
 						PluginDescriptionFile pdfFile = this.getDescription();
 						player.sendMessage(ChatColor.GREEN + "Reloaded " + pdfFile.getName() + "!");
@@ -303,12 +310,40 @@ public class ShopTeleport extends JavaPlugin implements Listener {
 							player.sendMessage(NoPermission);
 							return true;
 						}
+				}else if (args[0].equals("msg") || args[0].equals("message")){
+					if (getConfig().contains("shops."+player.getName())){
+						String message = "";
+						for (int i=1; i < args.length; i++){
+							message = message+" "+args[i];
+						}
+						int range = message.length();
+						int confrange = getConfig().getInt("config.msg-length");
+						if (message.length() > confrange){
+							range = confrange;
+						}
+						message = message.substring(1, range);
+						getConfig().set("shops." + player.getName() + ".message", message);
+						plugin.saveConfig();
+						player.sendMessage(MessageSet+" "+Messages.colours(message));
+						return true;
+					} else {
+						player.sendMessage(DoesntExsist);
+						return true;
+					}
+				}else if (args[0].equals("list")){
+					player.sendMessage(ShopList);
+					for (String key:getConfig().getKeys(true)){
+						if (key.startsWith("shops") && key.endsWith("message")){
+							player.sendMessage(ChatColor.AQUA + key.replace("shops.", "").replace(".message", "")+": "+ChatColor.RESET+Messages.colours(getConfig().getString(key)));
+						}						
+					}
+					return true;
 				}else{
 						String playername = args[0];
 						String playername1 = player.getName();
 						if (StringUtils.isNotBlank(getConfig().getString("shops." + playername))) {
 							if(playername.equals(playername1)) {
-								if(player.hasPermission("shopteleport.admin") || player.hasPermission("shopteleport.nolimit")) {
+								if(player.hasPermission("shopteleport.admin") || player.hasPermission("shopteleport.nolimit") || player.isOp()) {
 									float x = getConfig().getInt("shops." + playername1 + ".x");
 									float y = getConfig().getInt("shops." + playername1 + ".y");
 									float z = getConfig().getInt("shops." + playername1 + ".z");
